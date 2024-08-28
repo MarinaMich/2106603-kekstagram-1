@@ -13,20 +13,23 @@ const Method = {
   POST: 'POST',
 };
 
-async function load (route, errorText, method = Method.GET, body = null) {
+async function load (route, errorText, method = Method.GET, body = null, onSuccess, onError) {
   try {
     const response = await fetch(`${BASE_URL}${route}`, {method, body});
     if (!response.ok) {
-      throw new Error();
+      onError();
+      //throw new Error();
     }
-    return response.json();
+    //return response.json();
+    onSuccess(response.json());
   } catch {
-    throw new Error(errorText);
+    //throw new Error(errorText);
+    onError(errorText);
   }
 }
 
-const getData = () => load(Route.GET_DATA, ErrorText.GET_DATA);
+const getData = (onSuccess, onError) => load(Route.GET_DATA, ErrorText.GET_DATA, onSuccess, onError);
 
-const sendData = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body);
+const sendData = (body, onSuccess, onError) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body, onSuccess, onError);
 
 export {getData, sendData};

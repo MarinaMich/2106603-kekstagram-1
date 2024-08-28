@@ -10,24 +10,30 @@ import './img-to-upload.js';
 
 const RERENDER_DELAY = 500;
 
-try {
-  const pictures = await getData();
+const onSuccessForm = (pictures) => {
   displayUserPictures(pictures);
   onFilterClick(debounce(
     () => displayUserPictures(pictures),
     RERENDER_DELAY,
   ));
   openSelectionPicture(pictures);
-} catch(err) {
+};
+
+const onErrorForm = (err) => {
   showAlert(err.message);
-}
+};
+
+await getData(onSuccessForm, onErrorForm);
+
+const onSuccess = () => {
+  onImgUploadCancel();
+  showMessage('success');
+};
+
+const onError = () => {
+  showMessage('error');
+};
 
 setImgFormSubmit(async (data) => {
-  try {
-    await sendData(data);
-    onImgUploadCancel();
-    showMessage('success');
-  } catch {
-    showMessage('error');
-  }
+  await sendData(data, onSuccess, onError);
 });
