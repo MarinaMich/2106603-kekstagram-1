@@ -30,10 +30,10 @@ const onSuccessForm = () => {
   showMessage('success');
 };
 
-/*const onErrorForm = () => {
+const onErrorForm = () => {
   showMessage('error');
-};*/
+};
 
 setImgFormSubmit(async (data) => {
-  await sendData(data, onSuccessForm);
+  await sendData(onSuccessForm, onErrorForm, data);
 });

@@ -32,7 +32,6 @@ const load = (route, errorText, onSuccess, onError, method = Method.GET, body = 
     .then((response) => {
       if (!response.ok) {
         onError();
-        //throw new Error();
       }
       return response.json();
     })
@@ -41,13 +40,12 @@ const load = (route, errorText, onSuccess, onError, method = Method.GET, body = 
     })
     .catch(() => {
       onError(errorText);
-      //throw new Error(errorText);
     });
 
 const getData = (onSuccess, onError) => {
   load(Route.GET_DATA, ErrorText.GET_DATA, onSuccess, onError);
 };
 
-const sendData = (body, onSuccess) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body, onSuccess);
+const sendData = (onSuccess, onError, body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, onSuccess, onError, Method.POST, body);
 
 export {getData, sendData};
